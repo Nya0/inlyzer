@@ -30,3 +30,5 @@ commands.sum:action(function(parsed, command, app)
 end)
 
 cli:parse(arg)
+
+-- d
