@@ -3,6 +3,7 @@ local module_path = "./lua_modules"
 package.path = string.format("%s/share/lua/5.3/?.lua;%s/share/lua/5.3/?/init.lua;./?.lua;", module_path, module_path)
 package.cpath = string.format("%s/lib/lua/5.3/?.so;;", module_path)
 
+-- test
 
 -- requires
 local lfs = require("lfs")
