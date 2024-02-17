@@ -59,7 +59,7 @@ function database:generateHash()
     local schemaHash = funcs.exec(schemaHashCommand):match("%w+%s(%w+)")
 
     local dataCharCommand = "echo '"
-    cursor = conn:execute("SELECT table_name, MAX(update_time) FROM information_schema.tables WHERE table_schema = '" .. dbName .. "' GROUP BY table_name")
+    cursor = conn:execute("SELECT table_name, MAX(update_time) FROM information_schema.tables WHERE table_schema = '" .. self.auth.name .. "' GROUP BY table_name")
     local info = cursor:fetch({}, "a")
     while info do
         dataCharCommand = dataCharCommand .. info.table_name .. info['MAX(update_time)']
