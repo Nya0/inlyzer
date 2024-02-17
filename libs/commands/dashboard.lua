@@ -7,9 +7,9 @@ command.description = "Dashboard CLI controls"
 
 command.action = function(parsed, command, app) --
     if parsed.state == "on" then
-        DashModule.on()
+        DashModule.actions.on()
     elseif parsed.state == "off" then
-        DashModule.off()
+        DashModule.actions.off()
     end
 end
 
