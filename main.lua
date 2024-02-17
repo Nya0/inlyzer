@@ -1,8 +1,17 @@
+-- worst workaround
+local module_path = "./lua_modules"
+package.path = string.format("%s/share/lua/5.3/?.lua;%s/share/lua/5.3/?/init.lua;./?.lua;", module_path, module_path)
+package.cpath = string.format("%s/lib/lua/5.3/?.so;;", module_path)
+
+
+-- requires
 local lfs = require("lfs")
 
 local Lummander = require("lummander")
 local Dashboard = require("libs.dashboard")
 
+
+-- main code
 local cli = Lummander.new{
     title = "Inlyzer", 
     tag = "inlyzer", 
@@ -18,24 +27,5 @@ local theme = require("libs.theme")
 cli:apply_theme(theme)
 cli:commands_dir("libs/commands")
 
--- -- Add commands
--- local commands = {
---     dashboard = cli:command("dashboard <state>", "Starts the dashboard"),
---     sum = cli:command("sum <value1> <value2>", "Sum 2 values")
--- }
-
--- commands.dashboard:action(function(parsed, command, app)
---     if parsed.state == "on" then
---         Dashboard.start()
---     elseif parsed.state == "off" then
---         Dashboard.stop()
---     end
--- end)
-
-
--- commands.sum:option("option1","o","Option1 description",nil,"normal","option_default_value")
--- commands.sum:action(function(parsed, command, app)
---     print("".. parsed.value1.. "+"..parsed.value2.." = " ..tostring(tonumber(parsed.value1) + tonumber(parsed.value2)))
--- end)
-
+-- parser init
 cli:parse(arg)
