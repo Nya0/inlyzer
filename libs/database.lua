@@ -1,20 +1,23 @@
-local luasql = require("luasql.mysql")
-local env = luasql.mysql()
+local mongo = require('mongo')
 local io = require("io")
 local os = require("os")
+
+local md5 = require("md5")
+
+-- Common variables
+local id = mongo.ObjectID()
 
 local database = {
     currentHash = nil,
     _lastUpdate = os.clock(),
 
-    auth = {
-        name = nil,
-        user = nil,
-        pass = nil,
+    mongo = {
         host = nil,
+        database = nil,
+        collection = nil,
     },
 
-    _connection = nil
+    _client = nil
 }
 
 local funcs = {} -- local funcs
@@ -31,45 +34,32 @@ function funcs.exec(command)
     end
 end
 
-function database:init(dbTable)
-    self.auth = dbTable
+function database:init(mongoTable)
+    self.mongo = mongoTable
+    self._client = self:connect()
 end
 
 function database:connect()
-    return env:connect(self.auth.dbName, self.auth.user, self.auth.password, self.auth.host)
+    return mongo.Client(self.mongo.host)
 end
+
 
 function database:generateHash()
-    local conn = self._connection or self:Connect()
+    local collection = self._client:getCollection(self.mongo.database, self.mongo.collection)
+    local count = collection:count({})
+    
+    local options = { ["sort"] = { updatedAt = -1 }, ["limit"] = 1 }
+    local cursor = collection:find({}, options)
+    local lastUpdatedDoc = cursor:next()
+    local lastUpdateTime = lastUpdatedDoc and lastUpdatedDoc.updatedAt
 
-    local schemaHashCommand = "echo '"
-    local cursor = conn:execute("SHOW TABLES")
-    local table, _ = cursor:fetch({}, "a")
-    while table do
-        local tableCursor = conn:execute("DESCRIBE " .. table[1])
-        local field = tableCursor:fetch({}, "a")
-        while field do
-            schemaHashCommand = schemaHashCommand .. table[1] .. field.Field .. field.Type
-            field = tableCursor:fetch(field, "a")
-        end
-        table, _ = cursor:fetch(table, "a")
-    end
-    schemaHashCommand = schemaHashCommand .. "' | openssl dgst -sha256"
-    local schemaHash = funcs.exec(schemaHashCommand):match("%w+%s(%w+)")
-
-    local dataCharCommand = "echo '"
-    cursor = conn:execute("SELECT table_name, MAX(update_time) FROM information_schema.tables WHERE table_schema = '" .. self.auth.name .. "' GROUP BY table_name")
-    local info = cursor:fetch({}, "a")
-    while info do
-        dataCharCommand = dataCharCommand .. info.table_name .. info['MAX(update_time)']
-        info = cursor:fetch(info, "a")
-    end
-    dataCharCommand = dataCharCommand .. "' | openssl dgst -sha256"
-    local dataCharHash = funcs.exec(dataCharCommand):match("%w+%s(%w+)")
-
-    local finalHash = funcs.exec("echo '" .. schemaHash .. dataCharHash .. "' | openssl dgst -sha256"):match("%w+%s(%w+)")
-
-    return finalHash
+    local baseString = tostring(count) .. "-" .. tostring(lastUpdateTime)
+    
+    local hashValue = md5.sumhexa(baseString)
+    self.currentHash = hashValue
+    
+    return self.currentHash
 end
+
 
 return database
