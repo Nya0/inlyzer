@@ -10,6 +10,18 @@ local lfs = require("lfs")
 local Lummander = require("lummander")
 local Dashboard = require("libs.dashboard")
 
+-- config
+local config = {
+    commPort = 4010,
+    dashPort = 4080,
+
+    db = {
+        name = "inlyzerDB",
+        user = "inlyzerADMIN",
+        pass = "testpass",
+        host = "localhost",
+    }
+}
 
 -- main code
 local cli = Lummander.new{
