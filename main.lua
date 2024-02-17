@@ -16,7 +16,10 @@ local config = {
     dashPort = 4080,
 
     db = {
-        username = "InlyzerSQL"
+        name = "inlyzerDB",
+        user = "inlyzerADMIN",
+        pass = "testpass",
+        host = "localhost",
     }
 }
 
