@@ -5,7 +5,7 @@ local Lummander = require("lummander")
 local cli = Lummander.new{
     title = "Inlyzer", 
     tag = "inlyzer", 
-    description = "My App ",
+    description = "My App description",
     version = "0.1",
     author = "Cyberzone",
     theme = "black", 
@@ -29,6 +29,10 @@ commands.sum:action(function(parsed, command, app)
     print("".. parsed.value1.. "+"..parsed.value2.." = " ..tostring(tonumber(parsed.value1) + tonumber(parsed.value2)))
 end)
 
-cli:parse(arg)
+
+
 
 -- d
+io.write("Enter your choice: ")
+    local choice = io.read("*n")
+
