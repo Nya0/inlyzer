@@ -18,11 +18,10 @@ local config = {
     dashPort = 4080,
 
     db = {
-        name = "inlyzerDB",
-        user = "inlyzerADMIN",
-        pass = "testpass",
-        host = "localhost",
-    }
+        host = 'mongodb://127.0.0.1',
+        database = 'inlyzer',
+        collection = 'logs',
+    },
 }
 
 -- main code
@@ -43,4 +42,5 @@ cli:commands_dir("libs/commands")
 
 -- parser init
 Database:init(config.db)
+print(Database:generateHash())
 cli:parse(arg)
