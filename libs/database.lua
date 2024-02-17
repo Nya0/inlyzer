@@ -31,7 +31,6 @@ function funcs.exec(command)
     end
 end
 
-
 function database:init(dbTable)
     self.auth = dbTable
 end
