@@ -9,6 +9,7 @@ local lfs = require("lfs")
 
 local Lummander = require("lummander")
 local Dashboard = require("libs.dashboard")
+local Database = require("libs.database")
 
 -- config
 local config = {
@@ -40,4 +41,5 @@ cli:apply_theme(theme)
 cli:commands_dir("libs/commands")
 
 -- parser init
+Database:init(config.db)
 cli:parse(arg)
