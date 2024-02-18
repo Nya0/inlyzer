@@ -7,7 +7,7 @@ local md5 = require("md5")
 -- Common variables
 local id = mongo.ObjectID()
 
-local database = {
+local Database = {
     currentHash = nil,
     _lastUpdate = os.clock(),
 
@@ -34,17 +34,17 @@ function funcs.exec(command)
     end
 end
 
-function database:init(mongoTable)
+function Database:init(mongoTable)
     self.mongo = mongoTable
     self._client = self:connect()
 end
 
-function database:connect()
+function Database:connect()
     return mongo.Client(self.mongo.host)
 end
 
 
-function database:generateHash()
+function Database:generateHash()
     local collection = self._client:getCollection(self.mongo.database, self.mongo.collection)
     local count = collection:count({})
     
@@ -62,4 +62,4 @@ function database:generateHash()
 end
 
 
-return database
+return Database

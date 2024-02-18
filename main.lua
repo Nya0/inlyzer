@@ -12,6 +12,15 @@ local Lummander = require("lummander")
 local Dashboard = require("libs.dashboard")
 local Database = require("libs.database")
 
+local CommunicationModule = require("libs.comms")
+
+local serversList = {"127.0.0.1:12346", "127.0.0.1:12347"} -- Example server list
+
+CommunicationModule:init(serversList)
+
+-- Now you can use the module to broadcast messages or perform other operations
+
+
 -- config
 local config = {
     commPort = 4010,

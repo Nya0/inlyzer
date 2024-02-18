@@ -1,14 +1,14 @@
-local dashboard = {}
-dashboard.actions = {}
-dashboard.settings = {
+local Dashboard = {}
+Dashboard.actions = {}
+Dashboard.settings = {
     port = 4000
 }
 
-function dashboard._init()
+function Dashboard._init()
 
 end
 
-local actions = dashboard.actions
+local actions = Dashboard.actions
 
 function actions.on()
     print("what we on!")
@@ -18,4 +18,4 @@ function actions.off()
     print("what we off")
 end
 
-return dashboard
+return Dashboard
