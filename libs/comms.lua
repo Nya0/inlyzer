@@ -27,11 +27,8 @@ function CommunicationModule:init(serversList)
         client:read_start(function(err, chunk)
             assert(not err, err)
             if chunk then
-                -- Handle the received message here
-                -- For an echo server, just write the chunk back to the client
                 client:write(chunk)
             else
-                -- Close the client connection when the stream ends
                 client:close()
             end
         end)
@@ -40,9 +37,8 @@ function CommunicationModule:init(serversList)
     print("Server listening on port " .. echoServer:getsockname().port)
 end
 
--- Placeholder for starting the module, if needed
+-- placeholder for starting the module
 function CommunicationModule:start()
-    -- Here, you would start any asynchronous operations or loops
     uv.run()
 end
 
