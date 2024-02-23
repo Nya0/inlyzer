@@ -18,7 +18,6 @@ local serversList = {"127.0.0.1:12346", "127.0.0.1:12347"} -- Example server lis
 
 CommunicationModule:init(serversList)
 
--- Now you can use the module to broadcast messages or perform other operations
 
 
 -- config
@@ -46,10 +45,13 @@ local cli = Lummander.new{
 
 local theme = require("libs.theme")
 
+-- apply theme and init commands
 cli:apply_theme(theme)
 cli:commands_dir("libs/commands")
 
 -- parser init
+cli:parse(arg)
+
+-- db testing
 Database:init(config.db)
 print(Database:generateHash())
-cli:parse(arg)
